@@ -58,3 +58,47 @@ var maxProfit = function (prices) {
 // Output: 0
 // Explanation: In this
 // case, no transaction is done, i.e.max profit = 0.
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function (prices) {
+    let min = null;
+    let max = null;
+    let isUp = false;
+    let profit = 0;
+
+    for (let index = 0; index < prices.length; ++index) {
+        let item = prices[index]
+        if (min === null || max === null) {
+            min = item;
+            max = item;
+            continue;
+        }
+
+        // ищем до понижения
+        if (isUp) {
+            // покупка и продажа
+            if (item < max) {
+                profit += max - min;
+                isUp = false;
+                max = item;
+                min = item;
+            } else {
+                max = item;
+            }
+        } else { // ищем минималку
+            if (item > max) {
+                max = item;
+                isUp = true
+            } else {
+                min = item;
+                max = item;
+            }
+        }
+    }
+    if (isUp && max > min) {
+        profit += max - min;
+    }
+    return profit;
+};
